@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/supabaseClient";
 import { Container, Typography, Box, Button } from "@mui/material";
 import OrderModal from "@/app/my-components/OrderModal";
+import Image from "next/image"; 
 
 interface Service {
   id: number;
@@ -35,7 +36,14 @@ export default function OfficesServicePage() {
         {service.title}
       </Typography>
       <Box sx={{ display: "flex", justifyContent: "center", marginBottom: "20px" }}>
-        <img src={service.image_url} alt={service.title} style={{ width: "800px", maxWidth: "100%", borderRadius: "10px" }} />
+        <Image
+          src={service.image_url}
+          alt={service.title}
+          width={800} 
+          height={500}
+          style={{ borderRadius: "10px", objectFit: "cover" }}
+          unoptimized 
+        />
       </Box>
       <Typography variant="body1" paragraph>{service.description}</Typography>
       <Typography variant="h5" color="green" gutterBottom>{service.price}</Typography>
@@ -46,17 +54,19 @@ export default function OfficesServicePage() {
       {/* Секция с консультацией */}
       <Box sx={{ textAlign: "center", marginTop: "40px" }}>
         <Typography variant="h5">Остались вопросы?</Typography>
-        <Button variant="contained"
-      color="success"
-      sx={{
-        marginTop: '20px',
-        padding: '10px 20px',
-        backgroundColor: '#4caf50',
-        '&:hover': {
-          backgroundColor: '#388e3c',
-        },
-      }}
-      onClick={() => setIsModalOpen(true)}>
+        <Button
+          variant="contained"
+          color="success"
+          sx={{
+            marginTop: '20px',
+            padding: '10px 20px',
+            backgroundColor: '#4caf50',
+            '&:hover': {
+              backgroundColor: '#388e3c',
+            },
+          }}
+          onClick={() => setIsModalOpen(true)}
+        >
           Заказать консультацию
         </Button>
       </Box>
