@@ -6,11 +6,12 @@ import emailjs from "@emailjs/browser";
 
 export default function OrderModal({ open, onClose }: { open: boolean; onClose: () => void }) {
   const [name, setName] = useState("");
-  const [phone, setPhone] = useState("");
+  const [phone, setPhone] = useState("+7 ");
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [phoneError, setPhoneError] = useState(false);
+  const [lastSubmitTime, setLastSubmitTime] = useState<number | null>(null);
 
   // Функция форматирования номера в стиль +7 (XXX) XXX-XX-XX
   const formatPhoneNumber = (input: string) => {
@@ -18,7 +19,7 @@ export default function OrderModal({ open, onClose }: { open: boolean; onClose: 
     if (numbers.startsWith("8")) numbers = "7" + numbers.slice(1); // Заменяем 8 на 7
     if (numbers.length > 11) numbers = numbers.slice(0, 11); // Ограничиваем 11 символами
 
-    let formatted = "+ 7";
+    let formatted = "+7";
     if (numbers.length > 1) formatted += ` (${numbers.slice(1, 4)}`;
     if (numbers.length > 4) formatted += `) ${numbers.slice(4, 7)}`;
     if (numbers.length > 7) formatted += `-${numbers.slice(7, 9)}`;
@@ -29,26 +30,28 @@ export default function OrderModal({ open, onClose }: { open: boolean; onClose: 
   };
 
   const handleSubmit = async () => {
+    const now = Date.now();
+
+    // Проверяем ограничение по времени (30 секунд между заявками)
+    if (lastSubmitTime && now - lastSubmitTime < 30000) {
+      alert("Вы уже отправили заявку. Подождите 30 секунд.");
+      return;
+    }
+
     if (!name || phoneError) {
-      alert("Введите корректные данные");
+      alert("Введите корректные данные.");
       return;
     }
 
     setLoading(true);
+    setLastSubmitTime(now); // Запоминаем время последней отправки
 
-    const templateParams = {
-      name,
-      phone,
-      message,
-    };
+    const templateParams = { name, phone, message };
 
     emailjs
       .send("service_mfy59yc", "template_rjr5ydr", templateParams, "SVVG3rioLQLabouUw")
       .then(() => {
         setSuccess(true);
-        setName("");
-        setPhone("");
-        setMessage("");
       })
       .catch((error) => {
         console.error("Ошибка отправки:", error);
