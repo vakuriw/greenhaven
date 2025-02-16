@@ -37,11 +37,11 @@ export default function BlogPage() {
       <Grid container spacing={4}>
         {articles.map((article) => (
           <Grid item xs={12} sm={6} key={article.id}>
-            <Card>
+            <Card sx={{ display: "flex", flexDirection: "column", height: "100%" }}>
               <CardMedia component="img" height="200" image={article.image_url} alt={article.title} />
-              <CardContent>
+              <CardContent sx={{ flexGrow: 1 }}>
                 <Link href={`/blog/${article.id}`} style={{ textDecoration: "none" }}>
-                <Typography variant="h6">{article.title}</Typography>
+                  <Typography variant="h6">{article.title}</Typography>
                 </Link>
               </CardContent>
             </Card>

@@ -40,13 +40,19 @@ export default function ProjectPage() {
       <PortfolioSlider images={project.images} />
 
       {/* Описание под слайдером */}
-<Box sx={{ textAlign: "left", marginTop: "20px", paddingLeft: "10px" }}>
-  {project.description.split("\n").map((paragraph, index) => (
-    <Typography key={index} variant="body1" paragraph>
-      {paragraph}
-    </Typography>
-  ))}
+      <Box sx={{ textAlign: "left", marginTop: "20px", paddingLeft: "10px" }}>
+  {project.description.split("\n").map((paragraph, index) => {
+    // Если строка выглядит как заголовок (например, "Название проекта:", "Описание:", "Результат:"), делаем её жирной и увеличиваем шрифт
+    const isHeading = /^[А-ЯЁ][а-яё\s]+:$/.test(paragraph.trim());
+
+    return (
+      <Typography key={index} variant={isHeading ? "h6" : "body1"} paragraph sx={isHeading ? { fontWeight: "bold" } : {}}>
+        {paragraph}
+      </Typography>
+    );
+  })}
 </Box>
+
 
       
     </Container>
