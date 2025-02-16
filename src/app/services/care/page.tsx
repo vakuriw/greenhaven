@@ -76,17 +76,19 @@ export default function CareServicePage() {
           <Grid container spacing={3} justifyContent="center">
             {options.map((option) => (
               <Grid item xs={12} sm={6} key={option.id}>
-                <Card>
-                  <CardContent>
-                    <Typography variant="h6">{option.title}</Typography>
-                    <Typography variant="body2">{option.description}</Typography>
-                    <Typography variant="h6" color="green">{option.price}</Typography>
-                    <Button variant="contained" color="primary" onClick={() => setIsModalOpen(true)}>
+              <Card sx={{ display: "flex", flexDirection: "column", height: "100%" }}>
+                <CardContent sx={{ flexGrow: 1, display: "flex", flexDirection: "column" }}>
+                  <Typography variant="h6">{option.title}</Typography>
+                  <Typography variant="body2" sx={{ flexGrow: 1 }}>{option.description}</Typography>
+                  <Typography variant="h6" color="green">{option.price}</Typography>
+                  <Box sx={{ display: "flex", justifyContent: "left", marginTop: "10px" }}>
+                    <Button variant="contained" color="primary" sx={{ width: "auto", minWidth: "120px" }} onClick={() => setIsModalOpen(true)}>
                       Заказать
                     </Button>
-                  </CardContent>
-                </Card>
-              </Grid>
+                  </Box>
+                </CardContent>
+              </Card>
+            </Grid>            
             ))}
           </Grid>
         </>
